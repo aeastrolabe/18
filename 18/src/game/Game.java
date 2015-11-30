@@ -1,13 +1,17 @@
 package game;
 
+import java.awt.BorderLayout;
+
 import game.core.Board;
 import game.core.BoardType;
 import game.core.Difficulty;
 import game.core.Gamemode;
+import ui.Viewport;
 
 public class Game {
 	
 	/* Members */
+	private Viewport viewport;
 	
 	private int Nplayers = 2;
 
@@ -19,9 +23,18 @@ public class Game {
 	
 	private Board board = null; //initialize with gamemode, difficulty and board version
 
-	
+
+
 	/* Methods */
 	
+	public Game(Viewport v) {
+		board = new Board();
+		viewport = v;
+		
+		viewport.add(board.boardUI, BorderLayout.CENTER);
+	}
+	
+
 	public int getNplayers() { return Nplayers; }
 	public void setNplayers(int nplayers) { Nplayers = nplayers; } 
 
