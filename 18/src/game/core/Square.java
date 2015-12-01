@@ -1,5 +1,7 @@
 package game.core;
 
+import ui.SquareUI;
+
 public class Square {
 
 	/* Members */
@@ -17,7 +19,14 @@ public class Square {
 	private boolean firetruckParking = false;
 	private boolean hasFiretruck = false;
 	
+	public SquareUI ui;
 	
+	public Square(int i, int j) {
+		x = i;
+		y = j;
+		
+		ui = new SquareUI(this);
+	}
 	
 	/* Methods */
 	

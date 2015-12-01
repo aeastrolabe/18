@@ -14,8 +14,10 @@ public class SquareUI extends JPanel {
 	
 	public SquareUI(Square s) {
 		square = s;
-		setPreferredSize(new Dimension(10, 10));
+		setPreferredSize(new Dimension(60, 60));
 	}
+	
+	public Square getSquare() { return square; }
 	
 	public void paintComponent(Graphics g) {
 		drawBackground(g);

@@ -4,8 +4,8 @@ import ui.BoardUI;
 
 public class Board {
 	
-	public int width = 8;
-	public int height = 6;
+	public int width = 10;
+	public int height = 8;
 	
 	public BoardUI boardUI;
 
@@ -18,14 +18,20 @@ public class Board {
 	public Board() {
 		createSquares();
 		createWalls();
+		initializeWalls();
+		
 		boardUI = new BoardUI(this);
+		
+		
 	}
 	
 	private void createSquares() {
 		squares = new Square[width][height];
 		for(int i = 0; i < width; i++) {
 			for(int j = 0; j < height; j++) {
-				squares[i][j] = new Square();
+				squares[i][j] = new Square(i,j);
+				squares[i][j].ui.addMouseListener(new BoardHandler(this));
+				squares[i][j].setBoard(this);
 			}
 		}
 	}
@@ -35,13 +41,13 @@ public class Board {
 		walls[0] = new Wall[width][height+1];
 		for(int i = 0; i < width; i++) {
 			for(int j = 0; j < height+1; j++) {
-				walls[0][i][j] = new Wall();
+				walls[0][i][j] = new Wall(i,j,true);
 			}
 		}
 		walls[1] = new Wall[width+1][height];
 		for(int i = 0; i < width+1; i++) {
 			for(int j = 0; j < height; j++) {
-				walls[1][i][j] = new Wall();
+				walls[1][i][j] = new Wall(i,j,false);
 			}
 		}
 	}
@@ -54,12 +60,16 @@ public class Board {
 	public Square getSquare(Square s, Direction d) {
 		switch (d) {
 		case UP:
+			if (s.getY()-1 >= 0)
 			return this.squares[s.getX()][s.getY()-1];
 		case DOWN:
-			return this.squares[s.getX()-1][s.getY()+1];
+			if (s.getY() < height)
+			return this.squares[s.getX()][s.getY()+1];
 		case LEFT:
+			if (s.getX()-1 >= 0)
 			return this.squares[s.getX()-1][s.getY()];
 		case RIGHT:
+			if (s.getX() < width)
 			return this.squares[s.getX()+1][s.getY()];
 		}
 		return null;
@@ -93,6 +103,7 @@ public class Board {
 	
 	public void explosionAt(int i, int j) {
 		Square s = getSquare(i, j);
+		s.setState(SState.FIRE);
 		explosionAtAlong(s, Direction.UP);
 		explosionAtAlong(s, Direction.LEFT);
 		explosionAtAlong(s, Direction.DOWN);
@@ -101,7 +112,7 @@ public class Board {
 	
 	private boolean explosionAtAlong(Square s, Direction d) {
 		Square currentSquare = s;
-		while (explosionAtAlongStep(currentSquare, d)) {
+		while (!explosionAtAlongStep(currentSquare, d)) {
 			currentSquare = getSquare(currentSquare, d);
 			if (currentSquare == null) { return false; }
 		}
@@ -145,4 +156,16 @@ public class Board {
 		}
 		return squaresSaved.equals(squares);
 	}
+
+	public void initializeWalls() {
+		for(int i = 1; i < height-1; i++) {
+			walls[1][1][i].setSolid(true);
+			walls[1][width-1][i].setSolid(true);
+		}
+		for(int j = 1; j < width-1; j++) {
+			walls[0][j][1].setSolid(true);
+			walls[0][j][height-1].setSolid(true);
+		}
+	}
+
 }

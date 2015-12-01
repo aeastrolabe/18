@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 public class WallUI extends JPanel{
 	private static final long serialVersionUID = -6119743875630827366L;
 	
-	private int tall = 10, slim = 2;
-	
+	private int tall = 60, slim = 5;
+
 	private Wall wall;
 	
 	public WallUI(Wall w) {
@@ -30,8 +30,11 @@ public class WallUI extends JPanel{
 	}
 	
 	public void paintComponent(Graphics g){
-		if (wall.isSolid()) {
-			paintWall(g);
+		if (wall.isSolid() || wall.getDamage() == 2) {
+			paintWallSolid(g);
+		}
+		else{
+			paintWallNone(g);
 		}
 		if (wall.isDoor()) {
 			if (wall.isHasDoor() && wall.isDoorOpen()) {
@@ -46,7 +49,7 @@ public class WallUI extends JPanel{
 		}
 	}
 
-	private void paintWall(Graphics g) {
+	private void paintWallSolid(Graphics g) {
 		switch(wall.getDamage()) {
 		case 0:
 			g.setColor(Color.WHITE);
@@ -61,6 +64,11 @@ public class WallUI extends JPanel{
 			g.setColor(Color.RED);
 			break;
 		}
+		g.fillRect(0, 0, getWidth(), getHeight());
+	}
+	
+	private void paintWallNone(Graphics g) {
+		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 	

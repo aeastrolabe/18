@@ -1,6 +1,8 @@
 package ui;
 
-import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
 
 import javax.swing.JFrame;
 
@@ -9,8 +11,17 @@ public class Viewport extends JFrame {
 
 	public Viewport() {
 		super();
-		setSize(200,100);
+		getContentPane().setPreferredSize(new Dimension(800,600));
+
+		setLayout(new FlowLayout());
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		pack();
 		setVisible(true);
-		setLayout(new BorderLayout());
+		repaint();
+	}
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponents(g);
 	}
 }

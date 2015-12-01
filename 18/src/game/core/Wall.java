@@ -1,5 +1,7 @@
 package game.core;
 
+import ui.WallUI;
+
 public class Wall {
 
 	private boolean isSolid = false;
@@ -8,9 +10,15 @@ public class Wall {
 	private boolean isDoorOpen = false;
 	private int damage = 0;
 	private boolean isHorizontal = false;
+	public int i , j;
 	
-	public Wall() {
-		
+	public WallUI ui;
+	
+	public Wall(int i, int j, boolean hor) {
+		this.i = i;
+		this.j = j;
+		isHorizontal = hor;
+		ui = new WallUI(this);
 	}
 	
 	public boolean isSolid() { return isSolid; }
